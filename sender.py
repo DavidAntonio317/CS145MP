@@ -95,10 +95,9 @@ def main():
             flag = False
             timeout = int(duration)
             # compute number of packets that can be sent in remaining time
-            packet_num = (90 - timeout) // timeout
+            packet_num = (90 - timeout) / timeout
             # compute number of characters per packet
             packet_size = math.ceil((len(payload) - k) / packet_num)
-
 
 
         # print(data, duration) # for testing
