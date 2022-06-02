@@ -19,16 +19,16 @@ def checksum(packet):
     return hashlib.md5(packet.encode('utf-8')).hexdigest()
 
 i = 0
-# while True:
-#     time.sleep(1)
-#     data = sock.recv(512)
-#     data = data.decode()
-#     print(data)
+while True:
+    time.sleep(1)
+    data = sock.recv(512)
+    data = data.decode()
+    print(data)
 
-#     print('{} {}'.format(i, data))
+    print('{} {}'.format(i, data))
     
-#     sock.sendto('ACK{}TXN{}MD5{}'.format(str(i).zfill(7), uid, checksum(data)).encode(), ADDR)
-#     i+=len(data[35:])
+    sock.sendto('ACK{}TXN{}MD5{}'.format(str(i).zfill(7), uid, checksum(data)).encode(), ADDR)
+    i+=len(data[35:])
 
-#     if data[34] == '1':
-#         break
+    if data[34] == '1':
+        break
