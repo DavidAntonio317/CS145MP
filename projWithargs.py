@@ -21,12 +21,6 @@ DEST_PORT = int(args.s)
 SRC_PORT = int(args.c)
 ID = args.i
 
-'''
-    this implementation assumes that any payload can be sent in less than 90 seconds
-    with proper timeout and packet length limit. packet length is estimated by
-    computing number of packets that can be sent in the remaining time and divides
-    remaining payload between those packets.
-'''
 with open(FILE) as f:
     payload = f.read()
 
