@@ -4,7 +4,7 @@ import time
 import random
 
 HOST = '127.0.0.1'
-PORT = 6671
+PORT = 6704
 ADDR = (HOST, PORT)
 
 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -20,16 +20,16 @@ def checksum(packet):
 
 i = 0
 while True:
-    time.sleep(1)
+    time.sleep(.8)
     data = sock.recv(512)
     data = data.decode()
-    print(data)
-    # if int(data[12:19]) < i:
-        #print(data)
-        # continue
 
-    # if len(data[35:]) > 10:
-        # continue
+    if int(data[12:19]) < i:
+        print(data)
+        continue
+
+    if len(data[35:]) > 10:
+        continue
 
     print('{} {}'.format(i, data))
     
