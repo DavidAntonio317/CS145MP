@@ -13,11 +13,11 @@ def checksum(packet):
 def main():
     # Parsing commandline arguments
     argparser = argparse.ArgumentParser()
-    argparser.add_argument('-f')
-    argparser.add_argument('-a')
-    argparser.add_argument('-s')
-    argparser.add_argument('-c')
-    argparser.add_argument('-i')
+    argparser.add_argument('-f', default='e3e22884.txt')
+    argparser.add_argument('-a', default='10.0.7.141')
+    argparser.add_argument('-s', default=9000)
+    argparser.add_argument('-c', default=6671)
+    argparser.add_argument('-i', default='e3e22884')
     args = argparser.parse_args()
 
     filename = args.f 
@@ -95,9 +95,10 @@ def main():
             flag = False
             timeout = int(duration)
             # compute number of packets that can be sent in remaining time
-            packet_num = (90 - timeout) / timeout
+            packet_num = (90 - timeout) // timeout
             # compute number of characters per packet
             packet_size = math.ceil((len(payload) - k) / packet_num)
+
 
 
         # print(data, duration) # for testing
