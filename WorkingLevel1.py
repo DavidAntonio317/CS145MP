@@ -11,10 +11,10 @@ ADDR = (HOST, PORT)
 ADDR2 = (HOST, 9000)
 
 # Initiate UDP connection
-UDP_SOCKET = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+# UDP_SOCKET = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
 # Open payload.txt
-# FILE = open('payload.txt')
+FILE = open('payload.txt')
 
 
 # Checksum function
@@ -25,22 +25,22 @@ def checksum(packet):
 def main():
 
     # Bind the UDP scoket to host and port
-    UDP_SOCKET.bind((socket.gethostbyname(socket.gethostname()), PORT))
+    # UDP_SOCKET.bind((socket.gethostbyname(socket.gethostname()), PORT))
 
 
 
     # Send an Intent Message
-    UDP_SOCKET.sendto(f'ID{ID}'.encode(), ADDR2)
-    data, addr = UDP_SOCKET.recvfrom(1024)
-    transaction = data.decode()
-    print(transaction)
+    # UDP_SOCKET.sendto(f'ID{ID}'.encode(), ADDR2)
+    # data, addr = UDP_SOCKET.recvfrom(1024)
+    # transaction = data.decode()
+    # print(transaction)
 
     
     # Send Payload 
-    # payload = FILE.read()
-    # data_len = max(1, math.ceil(len(payload) / 90)) 
-    # print(data_len)
-
+    payload = FILE.read()
+    data_len = max(1, math.ceil(len(payload) / 90)) 
+    print(data_len)
+    
 
 
 if __name__ == "__main__":
