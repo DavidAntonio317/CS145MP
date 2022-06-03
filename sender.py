@@ -75,10 +75,10 @@ def main():
             print(packet)
             try:
                 ack = UDP_SOCKET.recv(64).decode()
-                # print(ack)
+                print(ack)
             except socket.timeout:
                 # print("got here")
-                packet_size = int(packet_size * 0.95)
+                packet_size = int(packet_size * 0.75)
                 UDP_SOCKET.settimeout(UDP_SOCKET.gettimeout() + 2)
             else:
                 # check that the ack received is for the packet that was sent
@@ -93,9 +93,9 @@ def main():
         SN+=1
         if flag:
             flag = False
-            timeout = int(duration)
+            timeout = duration
             # compute number of packets that can be sent in remaining time
-            packet_num = (90 - timeout) / timeout
+            packet_num = (90 - timeout) // timeout
             # compute number of characters per packet
             packet_size = math.ceil((len(payload) - k) / packet_num)
 
