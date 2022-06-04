@@ -61,15 +61,11 @@ def main():
         start_t = time.time()
         while (1):
             current_k = dat_length + k
-            if current_k  < len(payload):
-                data = payload[k:current_k]
-            else:
-                data = payload[k:]
+            if current_k  < len(payload):data = payload[k:current_k]
+            else:data = payload[k:]
 
-            if current_k < len(payload):
-                z = 0
-            else:
-                z = 1
+            if current_k < len(payload):z = 0
+            else:z = 1
 
             packet = f'ID{ID}SN{str(SN).zfill(7)}TXN{transaction}LAST{z}{data}'
             checker = checksum(packet)
