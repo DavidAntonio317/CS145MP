@@ -42,8 +42,8 @@ def main():
     UDP_SOCKET.sendto(f'ID{ID}'.encode(), (HOST, PORT))
 
     # Receive Acknowledgement
-    data, addr = UDP_SOCKET.recvfrom(1024)
-    transaction = data.decode()
+    DATA, addr = UDP_SOCKET.recvfrom(1024)
+    transaction = DATA.decode()
     print(transaction)
     
     # Send Payload 
@@ -51,40 +51,40 @@ def main():
     # Open payload.txt
     FILE = open(filename)
     payload = FILE.read()
-    dat_length = math.ceil(len(payload) / 95) # dat_length
-    k = 0
-    SN = 0
-    z = 0
+    dat_length = math.ceil(len(payload) / 80) # length of data sent per second
+    k = 0 # index
+    SN = 0 # Sequence Number
+    z = 0 #  denotes the last packet in the transmission
     flag = True
-    initial_t = time.time()
+    initial_t = time.time() # Variable that takes the start time of payload processing
     while k < len(payload):
         start_t = time.time()
         while (1):
             current_k = dat_length + k
-            if current_k  < len(payload):data = payload[k:current_k]
-            else:data = payload[k:]
+            if current_k  < len(payload): DATA = payload[k:current_k] # take a portion of the payload having the size of the data length we specified earlier. 
+            else: DATA = payload[k:]
+            #  check if that portion of the payload is at the end of the payload or not
+            if current_k < len(payload): z = 0 
+            else: z = 1
 
-            if current_k < len(payload):z = 0
-            else:z = 1
-
-            packet = f'ID{ID}SN{str(SN).zfill(7)}TXN{transaction}LAST{z}{data}'
+            packet = f'ID{ID}SN{str(SN).zfill(7)}TXN{transaction}LAST{z}{DATA}' # format a packet according to the specs in the MP
             checker = checksum(packet)
-            UDP_SOCKET.sendto(packet.encode(), (HOST,PORT))
+            UDP_SOCKET.sendto(packet.encode(), (HOST,PORT)) # send packet to server
             print(packet)
-            try:
-                ack = UDP_SOCKET.recv(64).decode()
-                print(ack)
-            except socket.timeout:
-                dat_length = math.ceil(dat_length * 0.95)
-                UDP_SOCKET.settimeout(UDP_SOCKET.gettimeout() + 2)
+            try: # try to receive an acknowledgement (ACK) message from the server
+                ACK = UDP_SOCKET.recv(64).decode() # receive an acknowledgement (ACK) message from the server
+                print(ACK)
+            except socket.timeout: # If the packet was not received successfully
+                dat_length = math.ceil(dat_length * 0.95) # trim data to be sent
+                UDP_SOCKET.settimeout(UDP_SOCKET.gettimeout() + 2) # add additional 2 seconds for the next timeout.
             else:
-                if ack[-32:] == checker:
+                if ACK[-32:] == checker: # check if there erros in the transmission message
                     break
-        k = current_k
-        SN = SN + 1
-        end_t = time.time()
-        span = end_t - start_t
-        UDP_SOCKET.settimeout(span + 2) 
+        k = current_k # update the current index 
+        SN = SN + 1 # update sequence number
+        end_t = time.time() 
+        span = end_t - start_t # take the duration the roundtrip time
+        UDP_SOCKET.settimeout(span + 2)  # account for the delay
 
         while flag:    
             # Calculate the number of packets that can be sent in the time remaining
@@ -93,10 +93,10 @@ def main():
             dat_length = math.ceil((len(payload) - k) / packetsLeft)
 
             flag = False
-
+    #  calculate the duration it took for the whole payload to be sent.
     final_t = time.time()
     transaction_t = final_t - initial_t
-    print(f'Transaction: {transaction_t}')
+    print(f'Duration: {transaction_t}')
 
 if __name__ == "__main__":
     main()
