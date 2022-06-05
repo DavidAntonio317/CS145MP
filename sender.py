@@ -36,7 +36,7 @@ def main():
 
     # Binding the UDP socket to host and port
     UDP_SOCKET.bind(('', src_port))
-    UDP_SOCKET.settimeout(11)
+    UDP_SOCKET.settimeout(9)
 
     # Send an Intent Message
     UDP_SOCKET.sendto(f'ID{ID}'.encode(), (HOST, PORT))
@@ -78,7 +78,7 @@ def main():
                 dat_length = math.ceil(dat_length * 0.95) # trim data to be sent
                 UDP_SOCKET.settimeout(UDP_SOCKET.gettimeout() + 2) # add additional 2 seconds for the next timeout.
             else:
-                if ACK[-32:] == checker: # check if there erros in the transmission message
+                if ACK[-32:] == checker: # check if there errors in the transmission message
                     break
         k = current_k # update the current index 
         SN = SN + 1 # update sequence number
