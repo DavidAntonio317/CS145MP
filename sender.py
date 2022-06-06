@@ -88,11 +88,11 @@ def main():
 
         while flag:    
             # Calculate the number of packets that can be sent in the time remaining
-            packetsLeft = math.ceil((95 - span) / span)  
+            packetsLeft = math.ceil((80 - span) / span)  
             # Calculate the amount of characters in each packet
             dat_length = math.ceil((len(payload) - k) / packetsLeft)
 
-            flag = False
+            flag = False # done with first packet
     #  calculate the duration it took for the whole payload to be sent.
     final_t = time.time()
     transaction_t = final_t - initial_t
